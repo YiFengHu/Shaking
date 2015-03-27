@@ -38,7 +38,7 @@ public class AlarmAgent {
 		intent.putExtra("msg", "TIME OUT!!!");
 
 		pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 2 * 1000, pendingIntent);
+		alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 	}
 	
 	public void cancelAlarm(Date date){
