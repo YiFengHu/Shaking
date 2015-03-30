@@ -5,7 +5,7 @@ import com.example.shaking.R;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class SelectActivity extends Activity{
+public class SelectSportActivity extends Activity{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -9,25 +9,47 @@
     tools:context="com.nptu.dse.shaking.main.MainActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/main_countDownTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/main_shaking_count_down"
+        android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/set"
+    <TextView
+        android:id="@+id/main_countDownTimerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:text="set" />
+        android:layout_below="@+id/main_countDownTitleTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="01:20:50"
+        android:textSize="30sp" />
 
-    <Button
-        android:id="@+id/cancel"
+    <LinearLayout
+        android:id="@+id/main_buttonLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/set"
-        android:layout_below="@+id/set"
-        android:text="cancel" />
+        android:layout_below="@+id/main_countDownTimerTextView"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
+
+        <Button
+            android:id="@+id/main_setAlarmButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_set_alarm" />
+
+        <Button
+            android:id="@+id/main_cancelAlarmButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_cancel_alarm" />
+    </LinearLayout>
 
 </RelativeLayout>

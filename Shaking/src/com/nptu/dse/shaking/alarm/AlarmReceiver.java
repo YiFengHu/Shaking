@@ -1,7 +1,7 @@
 package com.nptu.dse.shaking.alarm;
 
 import com.example.shaking.R;
-import com.nptu.dse.shaking.activity.SelectActivity;
+import com.nptu.dse.shaking.activity.SelectSportActivity;
 import com.nptu.dse.shaking.main.MainActivity;
 
 import android.app.Notification;
@@ -27,7 +27,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		//當使用者按下通知欄中的通知時要開啟的 Activity
-		Intent call = new Intent(context, SelectActivity.class);
+		Intent call = new Intent(context, SelectSportActivity.class);
 		//非必要,可以利用intent傳值
 		call.putExtra("notiId", 1);
 		//建立待處理意圖
