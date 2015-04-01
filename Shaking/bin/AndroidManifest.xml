@@ -24,7 +24,11 @@
             </intent-filter>
         </activity>
     		<activity android:name="com.nptu.dse.shaking.activity.SelectSportActivity"/>
-        <receiver android:name="com.nptu.dse.shaking.alarm.AlarmReceiver"/>
+        <receiver android:name="com.nptu.dse.shaking.alarm.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     
     
     </application>

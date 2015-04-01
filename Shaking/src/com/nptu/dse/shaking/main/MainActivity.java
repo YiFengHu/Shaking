@@ -7,6 +7,8 @@ import com.nptu.dse.shaking.alarm.AlarmAgent;
 import com.nptu.dse.shaking.alarm.AlarmAgent.AlarmDataListener;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,8 +17,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
-public class MainActivity extends Activity implements OnClickListener, AlarmDataListener{
+public class MainActivity extends Activity implements OnClickListener, AlarmDataListener, OnTimeSetListener{
 	
 	private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -32,6 +35,7 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 	private TextView titleTextView = null;
 	private TextView timerTextView = null;
 
+	private TimePickerDialog timePickerDialog = null;
 	
 	private Date date = null;
 	
@@ -42,6 +46,8 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		context = this;
 		alarmAgent = new AlarmAgent(this);
 		alarmAgent.setAlarmDataListener(this);
+		
+		timePickerDialog = new TimePickerDialog(context, null, 0, 0, false);
 		
 		titleTextView = (TextView)findViewById(ID_COUNT_DOWN_TITLE_TEXTVIEW);
 		timerTextView = (TextView)findViewById(ID_COUNT_DOWN_TIMER_TEXTVIEW);
@@ -66,8 +72,8 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 	}
 	
 	private void setTextView() {
-		if(alarmAgent.isSetAlarm()){
-			alarmAgent.requestCountDown();
+		if(alarmAgent.isAlarmExist()){
+//			alarmAgent.requestCountDown();
 			titleTextView.setText(getString(R.string.main_add_an_alarm_to_shake));
 			timerTextView.setVisibility(View.INVISIBLE);
 		}else{
@@ -81,9 +87,10 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		switch (view.getId()) {
 		case ID_SET_BUTTON:
 			
-			date = new Date(System.currentTimeMillis()+5000);
-			alarmAgent.setAlarm(date);
-			alarmAgent.requestCountDown();
+			timePickerDialog.show();
+//			date = new Date(System.currentTimeMillis()+5000);
+//			alarmAgent.setAlarm(date);
+//			alarmAgent.requestCountDown();
 
 			break;
 
@@ -110,7 +117,13 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 	@Override
 	public void onCountDownFinish() {
 		timerTextView.setText("00:00:00");
-		alarmAgent.requestCountDown();
+//		alarmAgent.requestCountDown();
+	}
+
+	@Override
+	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+		
+		alarmAgent.setAlarm(hourOfDay, minute);
 	}
 	
 }
