@@ -36,6 +36,11 @@ public class DBRepository {
 		return insertSyntax;
 	}
 	
+	public static String getDeleteSyntax() {
+		String deleteSyntax = "Delete FROM " + DATABASE_TABLE + ";";
+		return deleteSyntax;
+	}
+	
 	public class TableIndex{
 		public static final int ID = 0;
 		public static final int MESSAGE = 1;

@@ -15,7 +15,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="@string/main_shaking_count_down"
-        android:textSize="20sp" />
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/main_countDownTimerTextView"
@@ -25,7 +25,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="01:20:50"
-        android:textSize="30sp" />
+        android:textSize="45sp" />
 
     <LinearLayout
         android:id="@+id/main_buttonLayout"
@@ -43,13 +43,24 @@
             android:id="@+id/main_setAlarmButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/main_set_alarm" />
+            android:text="@string/main_set_alarm"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/main_cancelAlarmButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/main_cancel_alarm" />
+            android:text="@string/main_cancel_alarm"
+            android:textSize="20sp" />
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/main_alarmListView"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_buttonLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
+    </ListView>
 
 </RelativeLayout>

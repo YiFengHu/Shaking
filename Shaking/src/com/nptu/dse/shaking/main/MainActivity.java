@@ -1,10 +1,13 @@
 package com.nptu.dse.shaking.main;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.nptu.dse.shaking.R;
 import com.nptu.dse.shaking.alarm.AlarmAgent;
 import com.nptu.dse.shaking.alarm.AlarmAgent.AlarmDataListener;
+import com.nptu.dse.shaking.db.AlarmEntity;
+import com.nptu.dse.shaking.ui.adapter.AlarmListAdapter;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
@@ -16,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -34,10 +38,12 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 	private Button cancelButton = null;
 	private TextView titleTextView = null;
 	private TextView timerTextView = null;
-
 	private TimePickerDialog timePickerDialog = null;
+	private ListView alarmListView = null;
+	private AlarmListAdapter adapter = null;
 	
 	private Date date = null;
+	private ArrayList<AlarmEntity> mAlarmList = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,8 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		context = this;
 		alarmAgent = new AlarmAgent(this);
 		alarmAgent.setAlarmDataListener(this);
+		mAlarmList = new ArrayList<AlarmEntity>();
+		adapter = new AlarmListAdapter(this, mAlarmList);
 		
 		timePickerDialog = new TimePickerDialog(context, this, 0, 0, false);
 		
@@ -56,8 +64,11 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		setButton.setOnClickListener(this);
 		cancelButton = (Button)findViewById(ID_CANCEL_BUTTON);
 		cancelButton.setOnClickListener(this);
+		alarmListView = (ListView)findViewById(R.id.main_alarmListView);
+		alarmListView.setAdapter(adapter);
 		
 		setTextView();
+		alarmAgent.requestAlarmData();
 	}
 
 	@Override
@@ -96,7 +107,7 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 
 		case ID_CANCEL_BUTTON:
 			
-			alarmAgent.cancelAlarm(date);
+			alarmAgent.cancelAlarm();
 			break;
 			
 		default:
@@ -135,6 +146,18 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 	@Override
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 		alarmAgent.setAlarm(hourOfDay, minute);
+	}
+
+	@Override
+	public void onAlarmDataReady(ArrayList<AlarmEntity> mAlarmList) {
+		this.mAlarmList = mAlarmList;
+		adapter.updateData(mAlarmList);
+		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onCountDownCancel() {
+		timerTextView.setText("00:00:00");
 	}
 	
 }

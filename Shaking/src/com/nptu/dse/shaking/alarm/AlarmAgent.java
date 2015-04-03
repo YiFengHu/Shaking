@@ -48,9 +48,10 @@ public class AlarmAgent {
 	private ArrayList<AlarmEntity> mAlarmList = null;
 
 	public interface AlarmDataListener {
+		public void onAlarmDataReady(ArrayList<AlarmEntity> mAlarmList);
 		public void onCountDouwUpdate(String countDown);
-
 		public void onCountDownFinish();
+		public void onCountDownCancel();
 	}
 
 	public void setAlarmDataListener(AlarmDataListener alarmDataListener) {
@@ -66,10 +67,59 @@ public class AlarmAgent {
 		calendar = Calendar.getInstance();
 	}
 
-	public void requestCountDown(long targetTime) {
+	public void requestAlarmData(){
+		if(mAlarmList == null){
+			mAlarmList = new ArrayList<AlarmEntity>();
+			mAlarmList = getAlarms(mAlarmList);
+		}
+
+		if(alarmDataListener!=null){
+			alarmDataListener.onAlarmDataReady(mAlarmList);
+		}
+		
+		requestCountDown();
+	}
+	
+	public void requestCountDown(){
+		mAlarmList = getAlarms(mAlarmList);
+		
+		long nowTime = System.currentTimeMillis();
+		long remainTime = ONE_DAY_MILLISECONDS;
+		AlarmEntity targetEntity = null;
+
+		if(mAlarmList!=null && !mAlarmList.isEmpty()){
+			//Target the alarm to count down
+			for(int i=0; i<mAlarmList.size(); i++){
+				AlarmEntity entity = mAlarmList.get(i);
+				
+				if(entity.getAlarm_time()>nowTime){
+					if(remainTime>(entity.getAlarm_time()-nowTime)){
+						targetEntity = entity;
+						remainTime = entity.getAlarm_time()-nowTime;
+					}
+				}
+			}
+			
+			if(targetEntity!=null){
+				requestCountDown(targetEntity.getAlarm_time());
+			}else{
+				if(alarmDataListener!=null){
+					alarmDataListener.onCountDouwUpdate("00:00:00");
+				}
+			}
+		}
+		
+	}
+	
+	private void requestCountDown(long targetTime) {
 		
 		long timeLeft = targetTime - System.currentTimeMillis();
-
+		
+		if(countDownTimer!=null){
+			countDownTimer.cancel();
+			countDownTimer = null;
+		}
+		
 		countDownTimer = new CountDownTimer(timeLeft, 1000) {
 
 			public void onTick(long millisUntilFinished) {
@@ -101,7 +151,12 @@ public class AlarmAgent {
 	}
 
 	public void cancelCountDown() {
-		countDownTimer.cancel();
+		if(countDownTimer!=null){
+			countDownTimer.cancel();
+		}
+		if(alarmDataListener!=null){
+			alarmDataListener.onCountDownCancel();
+		}
 	}
 
 	public void setAlarm(final int hoursOfDay, final int minute) {
@@ -128,47 +183,38 @@ public class AlarmAgent {
 				
 				PendingIntent pendingIntent = createPendingIntent(context, alarmEntity);
 				alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), ONE_DAY_MILLISECONDS, pendingIntent);
-				mAlarmList = getAlarms(mAlarmList);
 				
-				long nowTime = System.currentTimeMillis();
-				long remainTime = ONE_DAY_MILLISECONDS;
-				AlarmEntity targetEntity = null;
-
-				//Target the alarm to count down
-				for(int i=0; i<mAlarmList.size(); i++){
-					AlarmEntity entity = mAlarmList.get(i);
-					
-					if(entity.getAlarm_time()>nowTime){
-						if(remainTime>(entity.getAlarm_time()-nowTime)){
-							targetEntity = entity;
-							remainTime = entity.getAlarm_time()-nowTime;
-						}
-					}
-				}
-				
-				if(targetEntity!=null){
-					requestCountDown(targetEntity.getAlarm_time());
-				}else{
-					if(alarmDataListener!=null){
-						alarmDataListener.onCountDouwUpdate("00:00:00");
-					}
-				}
+				requestCountDown();
+				requestAlarmData();
 //			}
 //		}).start();
 	}
 
-	public void cancelAlarm(Date date) {
-		int requestCode = (int) date.getTime();
+	public void cancelAlarm() {
+				
+		mAlarmList = getAlarms(mAlarmList);
 
-		calendar.setTime(date);
-		Log.d(TAG, "set alarm: " + calendar);
+		for(AlarmEntity alarmEntity:mAlarmList){
+			PendingIntent pendingIntent = createPendingIntent(context, alarmEntity);
+			alarmManager.cancel(pendingIntent);
+			Log.e(TAG, "Delete alarm: message="+alarmEntity.getMessage()+", "+alarmEntity.getAlarm_hour()+":"+alarmEntity.getAlarm_minute());
+		}
+		
+		try{
+			String sqlSytax = DBRepository.getDeleteSyntax();
+			Log.d(TAG, "delete table data: "+sqlSytax);
 
-		Intent intent = new Intent(context, AlarmReceiver.class);
-		intent.putExtra("msg", "TIME OUT!!!");
+			SQLiteDatabase db = DBManager.getInstance().getWritableDataBase();
+			db.execSQL(sqlSytax);
+			db.close();
 
-		pendingIntent = PendingIntent.getBroadcast(context, requestCode,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarmManager.cancel(pendingIntent);
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.e(TAG, "Exception while delete data: e="+e);
+		}
+		
+		cancelCountDown();
+		requestAlarmData();
 	}
 
 	public boolean isAlarmExist() {
