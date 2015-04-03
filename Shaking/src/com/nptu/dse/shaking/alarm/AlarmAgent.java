@@ -33,6 +33,8 @@ public class AlarmAgent {
 	private static final String INTENT_KEY_HOUR = DBRepository.ALARM_HOUR; 
 	private static final String INTENT_KEY_MINUTE = DBRepository.ALARM_MINUTE; 
 	
+	private static final long ONE_DAY_MILLISECONDS = 24*60*60*1000;
+	
 	public String intentTag = "message";
 	public String intentValue = "Time Out";
 
@@ -58,7 +60,7 @@ public class AlarmAgent {
 	public AlarmAgent(Context context) {
 		this.context = context;
 		if(isAlarmExist()){
-			mAlarmList = getAlarms();
+			mAlarmList = getAlarms(mAlarmList);
 		}
 		alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		calendar = Calendar.getInstance();
@@ -103,11 +105,11 @@ public class AlarmAgent {
 	}
 
 	public void setAlarm(final int hoursOfDay, final int minute) {
-		
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
+		Log.d(TAG, "setAlarm("+hoursOfDay+", "+minute+")");
+//		new Thread(new Runnable() {
+//			
+//			@Override
+//			public void run() {
 				calendar = Calendar.getInstance();
 				calendar.set(Calendar.HOUR_OF_DAY, hoursOfDay);
 				calendar.set(Calendar.MINUTE, minute);
@@ -116,7 +118,7 @@ public class AlarmAgent {
 				Log.d(TAG, "set alarm: hour=" + calendar.get(Calendar.HOUR_OF_DAY)+", minute="+calendar.get(Calendar.MINUTE));
 
 				AlarmEntity alarmEntity = new AlarmEntity();
-				alarmEntity.setId(System.currentTimeMillis());
+				alarmEntity.setId((int)calendar.getTimeInMillis());
 				alarmEntity.setMessage("Time to Shaking");
 				alarmEntity.setAlarm_hour(calendar.get(Calendar.HOUR_OF_DAY));
 				alarmEntity.setAlarm_minute(calendar.get(Calendar.MINUTE));
@@ -125,11 +127,11 @@ public class AlarmAgent {
 				insertAlarmToDB(alarmEntity.getId(), alarmEntity.getMessage(), alarmEntity.getAlarm_hour(), alarmEntity.getAlarm_minute(), alarmEntity.getAlarm_time());
 				
 				PendingIntent pendingIntent = createPendingIntent(context, alarmEntity);
-				alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-				mAlarmList = getAlarms();
+				alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), ONE_DAY_MILLISECONDS, pendingIntent);
+				mAlarmList = getAlarms(mAlarmList);
 				
 				long nowTime = System.currentTimeMillis();
-				long remainTime = 24 * 60 * 60 * 1000;
+				long remainTime = ONE_DAY_MILLISECONDS;
 				AlarmEntity targetEntity = null;
 
 				//Target the alarm to count down
@@ -144,9 +146,15 @@ public class AlarmAgent {
 					}
 				}
 				
-				requestCountDown(targetEntity.getAlarm_time());				
-			}
-		}).start();
+				if(targetEntity!=null){
+					requestCountDown(targetEntity.getAlarm_time());
+				}else{
+					if(alarmDataListener!=null){
+						alarmDataListener.onCountDouwUpdate("00:00:00");
+					}
+				}
+//			}
+//		}).start();
 	}
 
 	public void cancelAlarm(Date date) {
@@ -176,7 +184,7 @@ public class AlarmAgent {
 		intent.putExtra(INTENT_KEY_HOUR, alarmEntity.getAlarm_hour());
 		intent.putExtra(INTENT_KEY_MINUTE, alarmEntity.getAlarm_minute());
 	 
-		return PendingIntent.getService(context, (int) alarmEntity.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		return PendingIntent.getService(context, (int)alarmEntity.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 	
 	private int getAlarmCount(){
@@ -187,42 +195,63 @@ public class AlarmAgent {
 		int count = 0;
 
 		if (cursor != null) {
-			if(cursor.getCount()>0){
-				count = cursor.getInt(0);
+			if (cursor.getCount() > 0) {
+				cursor.moveToFirst();
+				do {
+					count = cursor.getInt(0);
+				} while (cursor.moveToNext());
+
 			}
 		}
+		db.close();
 		
 		return count;
 	}
 	
-	private void insertAlarmToDB(long id, String alarmMessage ,int hoursOfDay, int minute, long time){
+	private void insertAlarmToDB(int id, String alarmMessage ,int hoursOfDay, int minute, long time){
 		try{
 			String sqlSytax = DBRepository.getInsertSyntax(id, alarmMessage, hoursOfDay, minute, time);
-		
+			Log.d(TAG, "insertAlarmToDB: "+sqlSytax);
+
 			SQLiteDatabase db = DBManager.getInstance().getWritableDataBase();
-			Cursor cursor = db.rawQuery(sqlSytax, null);
+			db.execSQL(sqlSytax);
+			db.close();
+
 		}catch(Exception e){
 			e.printStackTrace();
 			Log.e(TAG, "Exception while insert data: e="+e);
 		}
 	}
 	
-	private ArrayList<AlarmEntity> getAlarms(){
-		ArrayList<AlarmEntity> alarmList = new ArrayList<AlarmEntity>();
+	private ArrayList<AlarmEntity> getAlarms(ArrayList<AlarmEntity> alarmList){
+		if(alarmList == null){
+			alarmList = new ArrayList<AlarmEntity>();
+		}
+		
+		alarmList.clear();
 		
 		String sqlSytax = DBRepository.getAllAlarmDataSyntax();
 		
-		SQLiteDatabase db = DBManager.getInstance().getWritableDataBase();
+		SQLiteDatabase db = DBManager.getInstance().getReadableDataBase();
 		Cursor cursor = db.rawQuery(sqlSytax, null);
 
+		Log.i(TAG, "cursor.getCount()="+cursor.getCount());
 		if (cursor != null) {
 			if(cursor.getCount()>0){
-				AlarmEntity alarmEntity = new AlarmEntity();
-				alarmEntity.init(cursor);
-				alarmList.add(alarmEntity);
+				cursor.moveToFirst();
+				do{
+					AlarmEntity alarmEntity = new AlarmEntity();
+					alarmEntity.init(cursor);
+					alarmList.add(alarmEntity);
+					Log.i(TAG, "alarmList.add("+alarmEntity.getAlarm_hour()+", "+alarmEntity.getAlarm_minute()+")");
+
+				}while(cursor.moveToNext());
+				
 			}
 		}
-		
+		db.close();
+
+		Log.i(TAG, "alarmList= "+alarmList);
 		return alarmList;
 	}
 }

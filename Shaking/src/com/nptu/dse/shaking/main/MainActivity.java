@@ -2,7 +2,7 @@ package com.nptu.dse.shaking.main;
 
 import java.util.Date;
 
-import com.example.shaking.R;
+import com.nptu.dse.shaking.R;
 import com.nptu.dse.shaking.alarm.AlarmAgent;
 import com.nptu.dse.shaking.alarm.AlarmAgent.AlarmDataListener;
 
@@ -47,7 +47,7 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		alarmAgent = new AlarmAgent(this);
 		alarmAgent.setAlarmDataListener(this);
 		
-		timePickerDialog = new TimePickerDialog(context, null, 0, 0, false);
+		timePickerDialog = new TimePickerDialog(context, this, 0, 0, false);
 		
 		titleTextView = (TextView)findViewById(ID_COUNT_DOWN_TITLE_TEXTVIEW);
 		timerTextView = (TextView)findViewById(ID_COUNT_DOWN_TIMER_TEXTVIEW);
@@ -105,24 +105,35 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 	}
 
 	@Override
-	public void onCountDouwUpdate(String countDown) {
-		if(timerTextView.getVisibility() != View.VISIBLE){
-			timerTextView.setVisibility(View.VISIBLE);
-		}
+	public void onCountDouwUpdate(final String countDown) {
+		runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				if(timerTextView.getVisibility() != View.VISIBLE){
+					timerTextView.setVisibility(View.VISIBLE);
+				}
+				
+				titleTextView.setText(getString(R.string.main_shaking_count_down));
+				timerTextView.setText(countDown);				
+			}
+		});
 		
-		titleTextView.setText(getString(R.string.main_shaking_count_down));
-		timerTextView.setText(countDown);
 	}
 
 	@Override
 	public void onCountDownFinish() {
-		timerTextView.setText("00:00:00");
-//		alarmAgent.requestCountDown();
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				timerTextView.setText("00:00:00");
+			}
+		});
 	}
 
 	@Override
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-		
 		alarmAgent.setAlarm(hourOfDay, minute);
 	}
 	

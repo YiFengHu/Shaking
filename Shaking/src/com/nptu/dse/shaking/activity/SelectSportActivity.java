@@ -1,6 +1,6 @@
 package com.nptu.dse.shaking.activity;
 
-import com.example.shaking.R;
+import com.nptu.dse.shaking.R;
 
 import android.app.Activity;
 import android.os.Bundle;

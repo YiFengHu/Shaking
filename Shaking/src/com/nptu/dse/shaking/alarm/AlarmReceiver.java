@@ -1,6 +1,6 @@
 package com.nptu.dse.shaking.alarm;
 
-import com.example.shaking.R;
+import com.nptu.dse.shaking.R;
 import com.nptu.dse.shaking.activity.SelectSportActivity;
 import com.nptu.dse.shaking.main.MainActivity;
 

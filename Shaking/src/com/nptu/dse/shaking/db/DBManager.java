@@ -25,4 +25,9 @@ public class DBManager {
 		SQLiteDatabase db = mSQLiteDataBaseHelper.getWritebleDataBase();
 		return db;
 	}
+	
+	public SQLiteDatabase getReadableDataBase(){
+		SQLiteDatabase db = mSQLiteDataBaseHelper.getReadableDataBase();
+		return db;
+	}
 }

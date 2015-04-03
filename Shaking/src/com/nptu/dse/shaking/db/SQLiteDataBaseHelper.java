@@ -9,7 +9,7 @@ public class SQLiteDataBaseHelper extends SQLiteOpenHelper {
 	
 	private  String TAG = SQLiteDataBaseHelper.class.getSimpleName();
 	private  SQLiteDatabase sqlDataBase;
-	private static final String DATABASE_NAME = "alarm.db";
+	private static final String DATABASE_NAME = DBRepository.DATABASE_NAME;
 	private static final int DATABASE_VERSION = 1;
 
 	public SQLiteDataBaseHelper(Context context) {
@@ -30,11 +30,18 @@ public class SQLiteDataBaseHelper extends SQLiteOpenHelper {
 	
 	private void createDetailTable(){
 		Log.d(TAG, "Create Table: "+DATABASE_NAME);
-		sqlDataBase.execSQL(DBRepository.createDBSyntax());
+		Log.i(TAG, DBRepository.createAlarmTableSyntax());
+
+		sqlDataBase.execSQL(DBRepository.createAlarmTableSyntax());
 	}
 	
 	public SQLiteDatabase getWritebleDataBase(){
 		sqlDataBase = getWritableDatabase();
+		return sqlDataBase;
+	}
+	
+	public SQLiteDatabase getReadableDataBase(){
+		sqlDataBase = getReadableDatabase();
 		return sqlDataBase;
 	}
 	

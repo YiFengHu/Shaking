@@ -1,10 +1,12 @@
 package com.nptu.dse.shaking.db;
 
+import com.nptu.dse.shaking.db.DBRepository.TableIndex;
+
 import android.database.Cursor;
 
 public class AlarmEntity {
 
-	private long id;
+	private int id;
 	private String message;
 	private int alarm_hour;
 	private int alarm_minute;
@@ -12,21 +14,19 @@ public class AlarmEntity {
 	
 	public void init(Cursor cursor){
 		if(cursor!=null){
-			if(cursor.getCount()>0){
-				id = cursor.getLong(cursor.getColumnIndex(DBRepository.ID));
-				message = cursor.getString(cursor.getColumnIndex(DBRepository.MESSAGE));
-				alarm_hour = cursor.getInt(cursor.getColumnIndex(DBRepository.ALARM_HOUR));
-				alarm_minute = cursor.getInt(cursor.getColumnIndex(DBRepository.ALARM_MINUTE));
-				alarm_time = cursor.getInt(cursor.getColumnIndex(DBRepository.ALARM_TIME));
-			}
+				id = cursor.getInt(TableIndex.ID);
+				message = cursor.getString(TableIndex.MESSAGE);
+				alarm_hour = cursor.getInt(TableIndex.ALARM_HOUR);
+				alarm_minute = cursor.getInt(TableIndex.ALARM_MINUTE);
+				alarm_time = cursor.getLong(TableIndex.ALARM_TIME);
 		}
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
