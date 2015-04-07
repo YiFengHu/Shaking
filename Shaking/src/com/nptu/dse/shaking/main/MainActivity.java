@@ -1,7 +1,9 @@
 package com.nptu.dse.shaking.main;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import com.nptu.dse.shaking.R;
 import com.nptu.dse.shaking.alarm.AlarmAgent;
@@ -50,7 +52,7 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		context = this;
-		alarmAgent = new AlarmAgent(this);
+		alarmAgent = AlarmAgent.getInstance(this);
 		alarmAgent.setAlarmDataListener(this);
 		mAlarmList = new ArrayList<AlarmEntity>();
 		adapter = new AlarmListAdapter(this, mAlarmList);
@@ -98,6 +100,10 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		switch (view.getId()) {
 		case ID_SET_BUTTON:
 			
+			Calendar calender = Calendar.getInstance();
+			calender.setTimeInMillis(System.currentTimeMillis());
+
+			timePickerDialog.updateTime(calender.get(Calendar.HOUR), calender.get(Calendar.MINUTE));
 			timePickerDialog.show();
 //			date = new Date(System.currentTimeMillis()+5000);
 //			alarmAgent.setAlarm(date);
@@ -145,7 +151,7 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 
 	@Override
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-		alarmAgent.setAlarm(hourOfDay, minute);
+		alarmAgent.setAlarm(hourOfDay, minute, false);
 	}
 
 	@Override

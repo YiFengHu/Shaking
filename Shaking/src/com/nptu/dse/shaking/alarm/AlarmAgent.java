@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.SimpleFormatter;
-
 import com.nptu.dse.shaking.db.AlarmEntity;
 import com.nptu.dse.shaking.db.DBManager;
 import com.nptu.dse.shaking.db.DBRepository;
 import com.nptu.dse.shaking.db.SQLiteDataBaseHelper;
 import com.nptu.dse.shaking.main.MainActivity;
-
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -28,13 +27,15 @@ public class AlarmAgent {
 
 	private static final String TAG = AlarmAgent.class.getSimpleName();
 
-	private static final String INTENT_KEY_ID = DBRepository.ID; 
-	private static final String INTENT_KEY_MESSAGE = DBRepository.MESSAGE; 
-	private static final String INTENT_KEY_HOUR = DBRepository.ALARM_HOUR; 
-	private static final String INTENT_KEY_MINUTE = DBRepository.ALARM_MINUTE; 
-	
+	public static final String INTENT_KEY_ID = DBRepository.ID; 
+	public static final String INTENT_KEY_MESSAGE = DBRepository.MESSAGE; 
+	public static final String INTENT_KEY_HOUR = DBRepository.ALARM_HOUR; 
+	public static final String INTENT_KEY_MINUTE = DBRepository.ALARM_MINUTE; 
+	public static final String INTENT_KEY_TIME = DBRepository.ALARM_TIME; 
+
 	private static final long ONE_DAY_MILLISECONDS = 24*60*60*1000;
 	
+	private static AlarmAgent instance = null;
 	public String intentTag = "message";
 	public String intentValue = "Time Out";
 
@@ -58,13 +59,21 @@ public class AlarmAgent {
 		this.alarmDataListener = alarmDataListener;
 	}
 
-	public AlarmAgent(Context context) {
+	private AlarmAgent(Context context) {
 		this.context = context;
 		if(isAlarmExist()){
 			mAlarmList = getAlarms(mAlarmList);
 		}
 		alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		calendar = Calendar.getInstance();
+	}
+	
+	public static AlarmAgent getInstance(Context context){
+		if(instance == null){
+			instance = new AlarmAgent(context);
+		}
+		
+		return instance;
 	}
 
 	public void requestAlarmData(){
@@ -159,13 +168,17 @@ public class AlarmAgent {
 		}
 	}
 
-	public void setAlarm(final int hoursOfDay, final int minute) {
+	public void setAlarm(final int hoursOfDay, final int minute, boolean isReset) {
 		Log.d(TAG, "setAlarm("+hoursOfDay+", "+minute+")");
 //		new Thread(new Runnable() {
 //			
 //			@Override
 //			public void run() {
 				calendar = Calendar.getInstance();
+				if(isReset){
+					calendar.add(Calendar.DATE, 1);
+				}
+				
 				calendar.set(Calendar.HOUR_OF_DAY, hoursOfDay);
 				calendar.set(Calendar.MINUTE, minute);
 				calendar.set(Calendar.SECOND, 00);
@@ -173,21 +186,33 @@ public class AlarmAgent {
 				Log.d(TAG, "set alarm: hour=" + calendar.get(Calendar.HOUR_OF_DAY)+", minute="+calendar.get(Calendar.MINUTE));
 
 				AlarmEntity alarmEntity = new AlarmEntity();
-				alarmEntity.setId((int)calendar.getTimeInMillis());
-				alarmEntity.setMessage("Time to Shaking");
+				alarmEntity.setId((int)System.currentTimeMillis());
+				alarmEntity.setMessage("Set at time: "+calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE));
 				alarmEntity.setAlarm_hour(calendar.get(Calendar.HOUR_OF_DAY));
 				alarmEntity.setAlarm_minute(calendar.get(Calendar.MINUTE));
 				alarmEntity.setAlarm_time(calendar.getTimeInMillis());
 				
 				insertAlarmToDB(alarmEntity.getId(), alarmEntity.getMessage(), alarmEntity.getAlarm_hour(), alarmEntity.getAlarm_minute(), alarmEntity.getAlarm_time());
-				
-				PendingIntent pendingIntent = createPendingIntent(context, alarmEntity);
-				alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), ONE_DAY_MILLISECONDS, pendingIntent);
-				
+				setAlarmManager(calendar.getTimeInMillis(), alarmEntity);
 				requestCountDown();
 				requestAlarmData();
 //			}
 //		}).start();
+	}
+	
+	@SuppressLint("NewApi")
+	public void setAlarmManager(long triggerMillis, AlarmEntity alarmEntity){
+		Log.i(TAG, "setAlarmManager: "+((triggerMillis-System.currentTimeMillis())/1000)+" left");
+
+		PendingIntent pendingIntent = createPendingIntent(context, alarmEntity);
+		
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+			alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerMillis, pendingIntent);
+		} else {
+			alarmManager.set(AlarmManager.RTC_WAKEUP, triggerMillis, pendingIntent);
+		}
+//		setWholeWeekAlarms(alarmEntity, pendingIntent);
+//		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerMillis, AlarmManager.INTERVAL_DAY, pendingIntent);
 	}
 
 	public void cancelAlarm() {
@@ -223,14 +248,17 @@ public class AlarmAgent {
 		return flag;
 	}
 	
-	private static PendingIntent createPendingIntent(Context context, AlarmEntity alarmEntity) {
-		Intent intent = new Intent(context, AlarmReceiver.class);
+	public static PendingIntent createPendingIntent(Context context, AlarmEntity alarmEntity) {
+		Intent intent = new Intent();
+		intent.setClass(context, AlarmReceiver.class);
 		intent.putExtra(INTENT_KEY_ID, alarmEntity.getId());
 		intent.putExtra(INTENT_KEY_MESSAGE, alarmEntity.getMessage());
 		intent.putExtra(INTENT_KEY_HOUR, alarmEntity.getAlarm_hour());
 		intent.putExtra(INTENT_KEY_MINUTE, alarmEntity.getAlarm_minute());
-	 
-		return PendingIntent.getService(context, (int)alarmEntity.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		intent.putExtra(INTENT_KEY_TIME, alarmEntity.getAlarm_time());
+
+		return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//		return PendingIntent.getService(context, (int)alarmEntity.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 	
 	private int getAlarmCount(){
@@ -299,5 +327,21 @@ public class AlarmAgent {
 
 		Log.i(TAG, "alarmList= "+alarmList);
 		return alarmList;
+	}
+	
+	public void deleteFromDB(int id){
+		
+		try{
+			String sqlSytax = DBRepository.getDeleteAccordingIdSyntax(id);
+			Log.d(TAG, "delete table data: "+sqlSytax);
+
+			SQLiteDatabase db = DBManager.getInstance().getWritableDataBase();
+			db.execSQL(sqlSytax);
+			db.close();
+
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.e(TAG, "Exception while delete data: e="+e);
+		}
 	}
 }

@@ -41,6 +41,11 @@ public class DBRepository {
 		return deleteSyntax;
 	}
 	
+	public static String getDeleteAccordingIdSyntax(int id) {
+		String deleteSyntax = "Delete FROM " + DATABASE_TABLE + " WHERE "+ID+" = "+id+" ;";
+		return deleteSyntax;
+	}
+	
 	public class TableIndex{
 		public static final int ID = 0;
 		public static final int MESSAGE = 1;

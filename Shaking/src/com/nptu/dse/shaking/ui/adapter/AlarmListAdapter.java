@@ -20,7 +20,7 @@ public class AlarmListAdapter extends BaseAdapter {
 	private static final int ID_INDEX_TEXTVIEW = R.id.mainAlarmListItem_indexTextView;
 	private static final int ID_MESSAGE_TEXTVIEW = R.id.mainAlarmListItem_messageTextView;
 	private static final int ID_TIME_TEXTVIEW = R.id.mainAlarmListItem_timeTextView;
-
+	private static final int ID_ID_TEXTVIEW = R.id.mainAlarmListItem_idTextView;
 	private Context context = null;
 	private ArrayList<AlarmEntity> mAlarmList = null;
 
@@ -63,6 +63,7 @@ public class AlarmListAdapter extends BaseAdapter {
 		}
 		
 		viewHolder.indexTextView.setText(""+(position+1));
+		viewHolder.idTextView.setText(""+mAlarmList.get(position).getId());
 		viewHolder.messageTextView.setText(mAlarmList.get(position).getMessage());
 		viewHolder.timeTextView.setText(mAlarmList.get(position).getAlarm_hour()+":"+mAlarmList.get(position).getAlarm_minute());
 
@@ -72,11 +73,13 @@ public class AlarmListAdapter extends BaseAdapter {
 
 	class ViewHolder {
 		private TextView indexTextView = null;
+		private TextView idTextView = null;
 		private TextView messageTextView = null;
 		private TextView timeTextView = null;
 
 		ViewHolder(View rootView) {
 			indexTextView = (TextView)rootView.findViewById(ID_INDEX_TEXTVIEW);
+			idTextView = (TextView)rootView.findViewById(ID_ID_TEXTVIEW);
 			messageTextView = (TextView)rootView.findViewById(ID_MESSAGE_TEXTVIEW);
 			timeTextView = (TextView)rootView.findViewById(ID_TIME_TEXTVIEW);
 

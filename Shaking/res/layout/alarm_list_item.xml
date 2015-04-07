@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:weightSum="10">
+    android:weightSum="15">
 
     <TextView
         android:id="@+id/mainAlarmListItem_indexTextView"
@@ -11,6 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="1"
+        android:textSize="20sp" />
+    
+    <TextView
+        android:id="@+id/mainAlarmListItem_idTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:text="23342"
         android:textSize="20sp" />
 
     <TextView
