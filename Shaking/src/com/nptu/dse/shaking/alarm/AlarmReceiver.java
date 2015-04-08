@@ -1,6 +1,7 @@
 package com.nptu.dse.shaking.alarm;
 
 import com.nptu.dse.shaking.R;
+import com.nptu.dse.shaking.activity.DialogActivity;
 import com.nptu.dse.shaking.activity.SelectSportActivity;
 import com.nptu.dse.shaking.db.AlarmEntity;
 import com.nptu.dse.shaking.main.ApplicationManager;
@@ -19,6 +20,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
+import android.sax.StartElementListener;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,13 +30,17 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 	private static final String TAG = AlarmReceiver.class.getSimpleName();
 	
+	public static final String BUNDLE_KEY_ALARM_MESSAGE = "BUNDLE_KEY_ALARM_MESSAGE"; 
+	private Context context = null;
+	
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		this.context = context;
 		Log.i(TAG, "onReceive");
 		Log.d(TAG, intent.toString());
 		String message = intent.getStringExtra(AlarmAgent.INTENT_KEY_MESSAGE);
 		Log.d(TAG, "msg=" + message);
-		Toast.makeText(ApplicationManager.getInstance().getContext(), "alarm:" + message, Toast.LENGTH_SHORT).show();
+//		Toast.makeText(ApplicationManager.getInstance().getContext(), "alarm:" + message, Toast.LENGTH_SHORT).show();
 		
 		long triggerMillis = intent.getLongExtra(AlarmAgent.INTENT_KEY_TIME, 0L);
 		long nextTriggerMillis = triggerMillis+AlarmManager.INTERVAL_DAY;
@@ -70,7 +77,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		//通知內容
 		String desc = "Detail: "+message;
 				
-		Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); // 通知音效的URI，在這裡使用系統內建的通知音效
+//		Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); // 通知音效的URI，在這裡使用系統內建的通知音效
 
 		//建立通知物件
 		Notification notification = new Notification.Builder(context)
@@ -78,8 +85,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 											.setContentTitle(title)
 											.setContentText(desc)
 											.setContentIntent(pendingIntent)
-											.setAutoCancel(true)
-											.setSound(soundUri).build();
+											.setAutoCancel(true).build();
 
 
 		//非必要,會在通知圖示旁顯示數字
@@ -87,6 +93,25 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 		//執行通知
 		noMgr.notify(1, notification);
+		
+		goToDialogActivity(message);
+		
+		RingAgent.getInstance().setDefaultRingTone();
+		RingAgent.getInstance().startRing();
+	}
+	
+	private void goToDialogActivity(String message){
+		Intent intent = new Intent();
+		Bundle bundle = new Bundle();
+		bundle.putString(BUNDLE_KEY_ALARM_MESSAGE, message);
+		intent.putExtras(bundle);
+		
+		intent.setClass(context, DialogActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
+	}
+	
+	private void showDialog(){
 	}
 
 }
