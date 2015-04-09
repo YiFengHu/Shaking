@@ -1,15 +1,21 @@
 package com.nptu.dse.shaking.activity;
 
+import java.util.List;
+
 import com.nptu.dse.shaking.R;
 import com.nptu.dse.shaking.alarm.AlarmReceiver;
-import com.nptu.dse.shaking.alarm.RingAgent;
+import com.nptu.dse.shaking.main.NotificationManager;
+import com.nptu.dse.shaking.manager.PowerManager;
+import com.nptu.dse.shaking.manager.RingManager;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,7 +26,11 @@ import android.widget.TextView;
 
 public class DialogActivity extends Activity{
 
+	private static String TAG = DialogActivity.class.getSimpleName();
+	
 	private Context context = null;
+	private AlertDialog.Builder builder = null;
+	private AlertDialog dialog = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +58,10 @@ public class DialogActivity extends Activity{
 			
 			@Override
 			public void onClick(View v) {
-				RingAgent.getInstance().stopRing();
-
+				RingManager.getInstance().stopRing();
+				PowerManager.getInstance().lightScreenOn();
+				NotificationManager.getInstance().removeAllNotification();
+				
 				Intent intent = new Intent();
 				intent.setClass(context, SelectSportActivity.class);
 				startActivity(intent);
@@ -63,7 +75,9 @@ public class DialogActivity extends Activity{
 			
 			@Override
 			public void onClick(View v) {
-				RingAgent.getInstance().stopRing();
+				RingManager.getInstance().stopRing();
+				PowerManager.getInstance().lightScreenOn();
+				NotificationManager.getInstance().removeAllNotification();
 
 				finish();				
 			}
@@ -72,11 +86,38 @@ public class DialogActivity extends Activity{
 		((ViewGroup)customTitleView.getParent()).removeView(customTitleView);
 		((ViewGroup)customContentView.getParent()).removeView(customContentView);
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setCustomTitle(customTitleView)
+		builder = new AlertDialog.Builder(this);
+		dialog = builder.setCustomTitle(customTitleView)
 			   .setView(customContentView)
-			   .setCancelable(false).create().show();
+			   .setCancelable(false).create();
+		dialog.show();
+	}
+
+	@Override
+	protected void onDestroy() {
+		if(dialog!=null && dialog.isShowing()){
+			dialog.dismiss();
+		}
+		
+		if(isOnlyActivity()){
+			System.exit(0);
+		}
+		super.onDestroy();
 	}
 	
-	
+	private boolean isOnlyActivity(){
+		ActivityManager mngr = (ActivityManager) getSystemService( ACTIVITY_SERVICE );
+
+		List<ActivityManager.RunningTaskInfo> taskList = mngr.getRunningTasks(10);
+
+	    Log.i(TAG, "Activity number = "+taskList.get(0).numActivities);
+	    Log.i(TAG, "Top Activity = "+taskList.get(0).topActivity.getClassName());
+
+		if(taskList.get(0).numActivities == 1 &&
+		   taskList.get(0).topActivity.getClassName().equals(this.getClass().getName())) {
+		    Log.i(TAG, "This is last activity in the stack");
+		    return true;
+		}
+		return false;
+	}
 }

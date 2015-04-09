@@ -16,5 +16,11 @@
     <string name="alarm_dialog_time_to_do_some_excercise">Time to do some excercise!!!</string>
     <string name="alarm_dialog_ok">OK</string>
     <string name="alarm_dialog_later">Later</string>
+    
+    <!-- Intent -->
+    <string name="intent_filter_action_shaking">INTENT_FILTER_SHAKING</string>
 
+    <!-- Notification -->
+    <string name="notification_ticker_time_to_shake">Time to Shake !</string>
+    
 </resources>

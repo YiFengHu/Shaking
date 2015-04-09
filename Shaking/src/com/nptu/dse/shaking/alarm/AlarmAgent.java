@@ -8,11 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.SimpleFormatter;
+
 import com.nptu.dse.shaking.db.AlarmEntity;
 import com.nptu.dse.shaking.db.DBManager;
 import com.nptu.dse.shaking.db.DBRepository;
 import com.nptu.dse.shaking.db.SQLiteDataBaseHelper;
 import com.nptu.dse.shaking.main.MainActivity;
+import com.nptu.dse.shaking.resource.IntentKey;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -26,12 +29,6 @@ import android.util.Log;
 public class AlarmAgent {
 
 	private static final String TAG = AlarmAgent.class.getSimpleName();
-
-	public static final String INTENT_KEY_ID = DBRepository.ID; 
-	public static final String INTENT_KEY_MESSAGE = DBRepository.MESSAGE; 
-	public static final String INTENT_KEY_HOUR = DBRepository.ALARM_HOUR; 
-	public static final String INTENT_KEY_MINUTE = DBRepository.ALARM_MINUTE; 
-	public static final String INTENT_KEY_TIME = DBRepository.ALARM_TIME; 
 
 	private static final long ONE_DAY_MILLISECONDS = 24*60*60*1000;
 	
@@ -251,11 +248,11 @@ public class AlarmAgent {
 	public static PendingIntent createPendingIntent(Context context, AlarmEntity alarmEntity) {
 		Intent intent = new Intent();
 		intent.setClass(context, AlarmReceiver.class);
-		intent.putExtra(INTENT_KEY_ID, alarmEntity.getId());
-		intent.putExtra(INTENT_KEY_MESSAGE, alarmEntity.getMessage());
-		intent.putExtra(INTENT_KEY_HOUR, alarmEntity.getAlarm_hour());
-		intent.putExtra(INTENT_KEY_MINUTE, alarmEntity.getAlarm_minute());
-		intent.putExtra(INTENT_KEY_TIME, alarmEntity.getAlarm_time());
+		intent.putExtra(IntentKey.INTENT_KEY_ID, alarmEntity.getId());
+		intent.putExtra(IntentKey.INTENT_KEY_MESSAGE, alarmEntity.getMessage());
+		intent.putExtra(IntentKey.INTENT_KEY_HOUR, alarmEntity.getAlarm_hour());
+		intent.putExtra(IntentKey.INTENT_KEY_MINUTE, alarmEntity.getAlarm_minute());
+		intent.putExtra(IntentKey.INTENT_KEY_TIME, alarmEntity.getAlarm_time());
 
 		return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 //		return PendingIntent.getService(context, (int)alarmEntity.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);

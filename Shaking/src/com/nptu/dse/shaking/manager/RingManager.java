@@ -1,4 +1,4 @@
-package com.nptu.dse.shaking.alarm;
+package com.nptu.dse.shaking.manager;
 
 import java.io.IOException;
 
@@ -11,26 +11,26 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
 
-public class RingAgent {
+public class RingManager {
 
-	private static final String TAG = RingAgent.class.getSimpleName();
+	private static final String TAG = RingManager.class.getSimpleName();
 
-	private static RingAgent instance = null;
+	private static RingManager instance = null;
 
 	private Context context = null;
 	private Uri soundResourceUri = null;
 	private MediaPlayer mediaPlayer = null;
 	private RingtoneManager ringToneManager = null;
 
-	private RingAgent() {
+	private RingManager() {
 		context = ApplicationManager.getInstance().getContext();
 		mediaPlayer = new MediaPlayer();
 		ringToneManager = new RingtoneManager(context);
 	}
 
-	public static RingAgent getInstance() {
+	public static RingManager getInstance() {
 		if (instance == null) {
-			instance = new RingAgent();
+			instance = new RingManager();
 		}
 		
 		return instance;

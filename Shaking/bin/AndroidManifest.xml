@@ -7,6 +7,8 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="19" />
+    
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
         android:allowBackup="true"
@@ -26,6 +28,7 @@
     		<activity android:name=".activity.SelectSportActivity"/>
         <receiver android:name=".alarm.AlarmReceiver">
             <intent-filter>
+                <action android:name="@string/intent_filter_action_shaking" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
