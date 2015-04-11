@@ -10,7 +10,8 @@
     <string name="main_set_alarm">Set Alarm</string>
     <string name="main_cancel_alarm">Cancel Alarm</string>
     <string name="main_add_an_alarm_to_shake">Add an alarm to Shake!</string>
-
+    <string name="main_shake_now">Shake now!</string>
+    
     <!-- Alarm Dialog -->
     <string name="alarm_dialog_time_to_do_some_excercise">Time to do some excercise!!!</string>
     <string name="alarm_dialog_ok">OK</string>

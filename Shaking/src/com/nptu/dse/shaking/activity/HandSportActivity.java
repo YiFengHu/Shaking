@@ -29,7 +29,6 @@ public class HandSportActivity extends YouTubeFailureRecoveryActivity {
 			YouTubePlayer player, boolean wasRestored) {
 		if (!wasRestored) {
 			player.cueVideo(videoId);
-			player.play();
 		}
 	}
 

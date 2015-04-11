@@ -29,7 +29,6 @@ public class LegSportActivity extends YouTubeFailureRecoveryActivity {
 			YouTubePlayer player, boolean wasRestored) {
 		if (!wasRestored) {
 			player.cueVideo(videoId);
-			player.play();
 		}
 	}
 

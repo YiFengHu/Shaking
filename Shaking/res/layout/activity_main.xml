@@ -54,11 +54,20 @@
             android:textSize="20sp" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/main_shakeNowButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_buttonLayout"
+        android:layout_centerHorizontal="true"
+        android:text="@string/main_shake_now"
+        android:textSize="20sp" />
+
     <ListView
         android:id="@+id/main_alarmListView"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/main_buttonLayout"
+        android:layout_below="@+id/main_shakeNowButton"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" >
     </ListView>
