@@ -7,15 +7,16 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="19" />
-    
-    <uses-permission android:name="android.permission.GET_TASKS"/>
 
+    <uses-permission android:name="android.permission.GET_TASKS" />
+	<uses-permission android:name="android.permission.INTERNET"/>
+	
     <application
+        android:name=".main.ShakingApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
-        android:name=".main.ShakingApp">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".main.MainActivity"
             android:label="@string/app_name" >
@@ -25,17 +26,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    		<activity android:name=".activity.SelectSportActivity"/>
-        <receiver android:name=".alarm.AlarmReceiver" android:enabled="true" >
+        <activity android:name=".activity.SelectSportActivity" />
+
+        <receiver
+            android:name=".alarm.AlarmReceiver"
+            android:enabled="true" >
             <intent-filter>
                 <action android:name="@string/intent_filter_action_shaking" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-    <activity android:name=".activity.DialogActivity"
-        		  android:theme="@style/smsDialog"/>
-    
+
+        <activity
+            android:name=".activity.DialogActivity"
+            android:theme="@style/smsDialog" />
+        <activity android:name=".activity.HandSportActivity" />
+        <activity android:name=".activity.LegSportActivity" />
+        <activity android:name=".activity.BodySportActivity" />
     </application>
 
-     
 </manifest>

@@ -10,22 +10,26 @@
     <string name="main_set_alarm">Set Alarm</string>
     <string name="main_cancel_alarm">Cancel Alarm</string>
     <string name="main_add_an_alarm_to_shake">Add an alarm to Shake!</string>
-    
+
     <!-- Alarm Dialog -->
     <string name="alarm_dialog_time_to_do_some_excercise">Time to do some excercise!!!</string>
     <string name="alarm_dialog_ok">OK</string>
     <string name="alarm_dialog_later">Later</string>
-    
+
     <!-- Intent -->
     <string name="intent_filter_action_shaking">INTENT_FILTER_SHAKING</string>
 
     <!-- Notification -->
     <string name="notification_ticker_time_to_shake">Time to Shake !</string>
-    
+
     <!-- Select Activity -->
     <string name="select_select_a_position">Select a place !</string>
-        <string name="select_hand">Hand</string>
-        <string name="select_leg">Leg</string>
-            <string name="select_body">Body</string>
-        
+    <string name="select_hand">Hand</string>
+    <string name="select_leg">Leg</string>
+    <string name="select_body">Body</string>
+    
+    <!-- Youtube -->
+    <string name="youtube_error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
+    
+
 </resources>
