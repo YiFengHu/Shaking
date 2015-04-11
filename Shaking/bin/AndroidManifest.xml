@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
     		<activity android:name=".activity.SelectSportActivity"/>
-        <receiver android:name=".alarm.AlarmReceiver">
+        <receiver android:name=".alarm.AlarmReceiver" android:enabled="true" >
             <intent-filter>
                 <action android:name="@string/intent_filter_action_shaking" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
