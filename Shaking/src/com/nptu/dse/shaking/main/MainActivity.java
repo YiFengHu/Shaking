@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import com.nptu.dse.shaking.R;
+import com.nptu.dse.shaking.activity.SelectSportActivity;
 import com.nptu.dse.shaking.alarm.AlarmAgent;
 import com.nptu.dse.shaking.alarm.AlarmAgent.AlarmDataListener;
 import com.nptu.dse.shaking.db.AlarmEntity;
@@ -15,6 +16,7 @@ import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,11 +35,13 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 	private static final int ID_COUNT_DOWN_TIMER_TEXTVIEW = R.id.main_countDownTimerTextView;
 	private static final int ID_SET_BUTTON = R.id.main_setAlarmButton;
 	private static final int ID_CANCEL_BUTTON = R.id.main_cancelAlarmButton;
+	private static final int ID_SHAKE_NOW_BUTTON = R.id.main_shakeNowButton;
 
 	private Context context = null;
 	private AlarmAgent alarmAgent = null;
 	private Button setButton = null;
 	private Button cancelButton = null;
+	private Button shakeNowButton = null;
 	private TextView titleTextView = null;
 	private TextView timerTextView = null;
 	private TimePickerDialog timePickerDialog = null;
@@ -66,6 +70,8 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		setButton.setOnClickListener(this);
 		cancelButton = (Button)findViewById(ID_CANCEL_BUTTON);
 		cancelButton.setOnClickListener(this);
+		shakeNowButton = (Button)findViewById(ID_SHAKE_NOW_BUTTON);
+		shakeNowButton.setOnClickListener(this);
 		alarmListView = (ListView)findViewById(R.id.main_alarmListView);
 		alarmListView.setAdapter(adapter);
 		
@@ -114,6 +120,13 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		case ID_CANCEL_BUTTON:
 			
 			alarmAgent.cancelAlarm();
+			break;
+			
+		case ID_SHAKE_NOW_BUTTON:
+			
+			Intent intent = new Intent();
+			intent.setClass(this, SelectSportActivity.class);
+			startActivity(intent);
 			break;
 			
 		default:
