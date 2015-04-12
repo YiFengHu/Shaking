@@ -1,6 +1,7 @@
 package com.nptu.dse.shaking.activity;
 
 import com.nptu.dse.shaking.R;
+import com.nptu.dse.shaking.main.MainActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,6 +34,14 @@ public class SelectSportActivity extends Activity implements OnClickListener {
 
 	}
 	
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent();
+		intent.setClass(this, MainActivity.class);
+		startActivity(intent);
+	}
+
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub

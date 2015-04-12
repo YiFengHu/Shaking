@@ -13,15 +13,15 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DialogActivity extends Activity{
@@ -46,14 +46,14 @@ public class DialogActivity extends Activity{
 		
 		LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		View dialogView = layoutInflater.inflate(R.layout.activitty_dialog, null);
-		View customTitleView = dialogView.findViewById(R.id.dialog_titleLayout);
-		View customContentView = dialogView.findViewById(R.id.dialog_contentLayout);
+		View dialogLayout = layoutInflater.inflate(R.layout.activity_dialog, null);
+		View customTitleView = dialogLayout.findViewById(R.id.dialog_titleLayout);
+		View customContentView = dialogLayout.findViewById(R.id.dialog_contentLayout);
 
-		TextView messageTextView = (TextView)dialogView.findViewById(R.id.dialog_messageTextView);
+		TextView messageTextView = (TextView)dialogLayout.findViewById(R.id.dialog_messageTextView);
 		messageTextView.setText(message);
 		
-		Button okButton = (Button)dialogView.findViewById(R.id.dialog_okButton);
+		Button okButton = (Button)dialogLayout.findViewById(R.id.dialog_okButton);
 		okButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -69,7 +69,7 @@ public class DialogActivity extends Activity{
 			}
 		});
 		
-		Button laterButton = (Button)dialogView.findViewById(R.id.dialog_laterButton);
+		Button laterButton = (Button)dialogLayout.findViewById(R.id.dialog_laterButton);
 
 		laterButton.setOnClickListener(new OnClickListener() {
 			
@@ -90,11 +90,15 @@ public class DialogActivity extends Activity{
 		dialog = builder.setCustomTitle(customTitleView)
 			   .setView(customContentView)
 			   .setCancelable(false).create();
+		
+	    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 		dialog.show();
+
 	}
 
 	@Override
 	protected void onDestroy() {
+		
 		if(dialog!=null && dialog.isShowing()){
 			dialog.dismiss();
 		}
