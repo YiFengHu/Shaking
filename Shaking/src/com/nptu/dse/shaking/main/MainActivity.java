@@ -18,6 +18,8 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,7 +64,8 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		adapter = new AlarmListAdapter(this, mAlarmList);
 		
 		timePickerDialog = new TimePickerDialog(context, this, 0, 0, false);
-		
+//		timePickerDialog = new TimePickerDialog(context, this, 0, 0, DateFormat.is24HourFormat(context));
+
 		titleTextView = (TextView)findViewById(ID_COUNT_DOWN_TITLE_TEXTVIEW);
 		timerTextView = (TextView)findViewById(ID_COUNT_DOWN_TIMER_TEXTVIEW);
 		
@@ -109,7 +112,7 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 			Calendar calender = Calendar.getInstance();
 			calender.setTimeInMillis(System.currentTimeMillis());
 
-			timePickerDialog.updateTime(calender.get(Calendar.HOUR), calender.get(Calendar.MINUTE));
+			timePickerDialog.updateTime(calender.get(Calendar.HOUR_OF_DAY), calender.get(Calendar.MINUTE));
 			timePickerDialog.show();
 //			date = new Date(System.currentTimeMillis()+5000);
 //			alarmAgent.setAlarm(date);
