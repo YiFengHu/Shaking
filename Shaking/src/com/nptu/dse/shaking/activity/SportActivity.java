@@ -18,10 +18,8 @@ public class SportActivity extends YouTubeFailureRecoveryActivity {
 
 //	private static final String videoId = "ALAaIcLTS4Y";
 	private YouTubePlayerView youtubePlayerView = null;
-	
-	private ImageView animationImageView = null;
-	private AnimationDrawable animationDrawable = null;
-	
+	private YouTubePlayer youtubePlayer= null;
+
 	private Intent intent = null;
 	private String videoId = null;
 
@@ -38,10 +36,6 @@ public class SportActivity extends YouTubeFailureRecoveryActivity {
 			}
 		}
 		
-		animationImageView = (ImageView)findViewById(R.id.sport_animation);
-		animationDrawable = (AnimationDrawable)animationImageView.getBackground();
-		animationDrawable.start();
-		
 		youtubePlayerView = (YouTubePlayerView) findViewById(R.id.sport_youtubeView);
 		youtubePlayerView.initialize(DeveloperKey.DEVELOPER_KEY, this);
 	}
@@ -50,6 +44,9 @@ public class SportActivity extends YouTubeFailureRecoveryActivity {
 	public void onInitializationSuccess(YouTubePlayer.Provider provider,
 			YouTubePlayer player, boolean wasRestored) {
 		if (!wasRestored) {
+			youtubePlayer = player;
+			player.setFullscreen(true);
+			player.setShowFullscreenButton(false);
 			player.cueVideo(videoId);
 		}
 	}
