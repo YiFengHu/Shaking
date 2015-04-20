@@ -1,6 +1,8 @@
 package com.nptu.dse.shaking.activity;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
@@ -14,12 +16,19 @@ public class HandSportActivity extends YouTubeFailureRecoveryActivity {
 
 	private static final String videoId = "ALAaIcLTS4Y";
 	private YouTubePlayerView youtubePlayerView = null;
+	
+	private ImageView animationImageView = null;
+	private AnimationDrawable animationDrawable = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_hand_sport);
 
+		animationImageView = (ImageView)findViewById(R.id.handSport_shakingAnimImageView);
+		animationDrawable = (AnimationDrawable)animationImageView.getBackground();
+		animationDrawable.start();
+		
 		youtubePlayerView = (YouTubePlayerView) findViewById(R.id.handSport_youtubeView);
 		youtubePlayerView.initialize(DeveloperKey.DEVELOPER_KEY, this);
 	}
