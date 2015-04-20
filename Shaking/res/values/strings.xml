@@ -17,7 +17,7 @@
     <string name="alarm_dialog_time_to_do_some_excercise">Time to do some excercise!!!</string>
     <string name="alarm_dialog_ok">OK</string>
     <string name="alarm_dialog_later">Later</string>
-    <string name="alarm_dialog_do_some_exercise">Do some excercise!</string>
+    <string name="alarm_dialog_exercise">Excercise!</string>
     
 
     <!-- Intent -->

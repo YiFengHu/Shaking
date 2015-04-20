@@ -84,6 +84,7 @@
         android:background="@drawable/select_hint_button"
         android:text="@string/select_hand"
         android:textColor="@android:color/white"
+        android:textSize="30sp"
         android:visibility="invisible" />
 
     <Button
@@ -95,6 +96,7 @@
         android:background="@drawable/select_hint_button"
         android:text="@string/select_waist"
         android:textColor="@android:color/white"
+        android:textSize="30sp"
         android:visibility="invisible" />
 
     <Button
@@ -106,6 +108,7 @@
         android:background="@drawable/select_hint_button"
         android:text="@string/select_foot"
         android:textColor="@android:color/white"
+        android:textSize="30sp"
         android:visibility="invisible" />
 
     <Button
@@ -117,6 +120,7 @@
         android:background="@drawable/select_hint_button"
         android:text="@string/select_head"
         android:textColor="@android:color/white"
+        android:textSize="30sp"
         android:visibility="invisible" />
 
 </RelativeLayout>

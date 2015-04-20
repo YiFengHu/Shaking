@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Shaking</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Main -->
+    <string name="main_shaking_count_down">運動倒數</string>
+    <string name="main_set_alarm">設定鬧鐘</string>
+    <string name="main_cancel_alarm">取消鬧鐘</string>
+    <string name="main_add_an_alarm_to_shake">新增一個鬧鐘</string>
+    <string name="main_shake_now">開始運動</string>
+    <string name="main_go">Go</string>
+
+    <!-- Alarm Dialog -->
+    <string name="alarm_dialog_time_to_do_some_excercise">該做運動囉!!!</string>
+    <string name="alarm_dialog_ok">好</string>
+    <string name="alarm_dialog_later">晚一點</string>
+    <string name="alarm_dialog_exercise">運動囉!</string>
+    
+    <!-- Notification -->
+    <string name="notification_ticker_time_to_shake">該運動囉!</string>
+
+    <!-- Select Activity -->
+    <string name="select_select_a_position">選則一個部位!</string>
+    <string name="select_head">頭</string>
+    <string name="select_hand">手</string>
+    <string name="select_waist">腰</string>
+    <string name="select_foot">腳</string>
+
+    <!-- Youtube -->
+    <string name="youtube_error_player">YouTube 發生錯誤 (%1$s)</string>
+
+</resources>

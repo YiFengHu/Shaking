@@ -46,7 +46,6 @@ public class SportActivity extends YouTubeFailureRecoveryActivity {
 		if (!wasRestored) {
 			youtubePlayer = player;
 			player.setFullscreen(true);
-			player.setShowFullscreenButton(false);
 			player.cueVideo(videoId);
 		}
 	}
