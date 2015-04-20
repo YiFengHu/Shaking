@@ -1,5 +1,6 @@
 package com.nptu.dse.shaking.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -9,27 +10,39 @@ import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.nptu.dse.shaking.R;
 import com.nptu.dse.shaking.resource.DeveloperKey;
+import com.nptu.dse.shaking.resource.IntentKey;
 
-public class HandSportActivity extends YouTubeFailureRecoveryActivity {
+public class SportActivity extends YouTubeFailureRecoveryActivity {
 
-	private static final String TAG = HandSportActivity.class.getSimpleName();
+	private static final String TAG = SportActivity.class.getSimpleName();
 
-	private static final String videoId = "ALAaIcLTS4Y";
+//	private static final String videoId = "ALAaIcLTS4Y";
 	private YouTubePlayerView youtubePlayerView = null;
 	
 	private ImageView animationImageView = null;
 	private AnimationDrawable animationDrawable = null;
+	
+	private Intent intent = null;
+	private String videoId = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_hand_sport);
-
-		animationImageView = (ImageView)findViewById(R.id.handSport_shakingAnimImageView);
+		setContentView(R.layout.activity_sport);
+		intent = getIntent();
+		if(intent!=null){
+			if(intent.getStringExtra(IntentKey.INTENT_KEY_YUOTUBE_VIDEO_ID)!=null){
+				videoId = intent.getStringExtra(IntentKey.INTENT_KEY_YUOTUBE_VIDEO_ID);
+			}else{
+				videoId = "";
+			}
+		}
+		
+		animationImageView = (ImageView)findViewById(R.id.sport_animation);
 		animationDrawable = (AnimationDrawable)animationImageView.getBackground();
 		animationDrawable.start();
 		
-		youtubePlayerView = (YouTubePlayerView) findViewById(R.id.handSport_youtubeView);
+		youtubePlayerView = (YouTubePlayerView) findViewById(R.id.sport_youtubeView);
 		youtubePlayerView.initialize(DeveloperKey.DEVELOPER_KEY, this);
 	}
 
@@ -43,7 +56,7 @@ public class HandSportActivity extends YouTubeFailureRecoveryActivity {
 
 	@Override
 	protected Provider getYouTubePlayerProvider() {
-		return (YouTubePlayerView) findViewById(R.id.handSport_youtubeView);
+		return (YouTubePlayerView) findViewById(R.id.sport_youtubeView);
 	}
 
 	@Override

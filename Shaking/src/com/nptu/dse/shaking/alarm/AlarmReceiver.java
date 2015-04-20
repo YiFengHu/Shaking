@@ -1,6 +1,7 @@
 package com.nptu.dse.shaking.alarm;
 
 import com.nptu.dse.shaking.R;
+import com.nptu.dse.shaking.activity.AnimationDialogActivity;
 import com.nptu.dse.shaking.activity.DialogActivity;
 import com.nptu.dse.shaking.activity.SelectSportActivity;
 import com.nptu.dse.shaking.db.AlarmEntity;
@@ -73,7 +74,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		bundle.putString(BUNDLE_KEY_ALARM_MESSAGE, message);
 		intent.putExtras(bundle);
 		
-		intent.setClass(context, DialogActivity.class);
+		intent.setClass(context, AnimationDialogActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}

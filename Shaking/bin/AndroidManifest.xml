@@ -40,9 +40,11 @@
         <activity
             android:name=".activity.DialogActivity"
             android:theme="@style/DialogTheme" />
-        <activity android:name=".activity.HandSportActivity" />
-        <activity android:name=".activity.LegSportActivity" />
-        <activity android:name=".activity.BodySportActivity" />
+        <activity android:name=".activity.SportActivity" />
+        <activity
+            android:name=".activity.AnimationDialogActivity"
+            android:theme="@style/DialogTheme" />
+        
     </application>
 
 </manifest>

@@ -5,16 +5,17 @@
     android:orientation="vertical" >
 
     <com.google.android.youtube.player.YouTubePlayerView
-        android:id="@+id/handSport_youtubeView"
+        android:id="@+id/sport_youtubeView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
     <ImageView
-        android:id="@+id/handSport_shakingAnimImageView"
+        android:id="@+id/sport_animation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/animation_shaking_sports" />
+        android:layout_margin="10dp"
+        android:background="@drawable/animation_shaking_sports" >
+    </ImageView>
 
 </LinearLayout>

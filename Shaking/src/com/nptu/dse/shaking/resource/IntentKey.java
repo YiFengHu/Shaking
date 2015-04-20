@@ -15,5 +15,7 @@ public class IntentKey {
 	public static final String INTENT_KEY_TIME = "INTENT_KEY_TIME";
 	
 	public static final String INTENT_KEY_NOTIFICATION_ID = "INTENT_KEY_NOTIFICATION_ID";
+	
+	public static final String INTENT_KEY_YUOTUBE_VIDEO_ID = "INTENT_KEY_YUOTUBE_VIDEO_ID";
 
 }
