@@ -2,6 +2,7 @@ package com.nptu.dse.shaking.manager;
 
 import java.io.IOException;
 
+import com.nptu.dse.shaking.R;
 import com.nptu.dse.shaking.main.ApplicationManager;
 
 import android.content.Context;
@@ -37,30 +38,33 @@ public class RingManager {
 	}
 
 	public boolean setDefaultRingTone() {
-		soundResourceUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-		try {
-			mediaPlayer.setDataSource(context, soundResourceUri);
-		} catch (IllegalArgumentException e) {
-			Log.e(TAG, "IllegalArgumentException occurred while setRing(): e="+e);
-			e.printStackTrace();
-			return false;
-
-		} catch (SecurityException e) {
-			Log.e(TAG, "SecurityException occurred while setRing(): e="+e);
-			e.printStackTrace();
-			return false;
-
-		} catch (IllegalStateException e) {
-			Log.e(TAG, "IllegalStateException occurred while setRing(): e="+e);
-			e.printStackTrace();
-			return false;
-
-		} catch (IOException e) {
-			Log.e(TAG, "IOException occurred while setRing(): e="+e);
-			e.printStackTrace();
-			return false;
-
-		}
+//		soundResourceUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+//		
+//		try {
+//			mediaPlayer.setDataSource(context, soundResourceUri);
+//		} catch (IllegalArgumentException e) {
+//			Log.e(TAG, "IllegalArgumentException occurred while setRing(): e="+e);
+//			e.printStackTrace();
+//			return false;
+//
+//		} catch (SecurityException e) {
+//			Log.e(TAG, "SecurityException occurred while setRing(): e="+e);
+//			e.printStackTrace();
+//			return false;
+//
+//		} catch (IllegalStateException e) {
+//			Log.e(TAG, "IllegalStateException occurred while setRing(): e="+e);
+//			e.printStackTrace();
+//			return false;
+//
+//		} catch (IOException e) {
+//			Log.e(TAG, "IOException occurred while setRing(): e="+e);
+//			e.printStackTrace();
+//			return false;
+//
+//		}
+		
+		mediaPlayer = MediaPlayer.create(context, R.raw.alarm_little_apple);
 		return true;
 	}
 
@@ -68,7 +72,6 @@ public class RingManager {
 		try {
 //			int mNumberOfRingtones = ringToneManager.getCursor().getCount();
 //			Uri mRingToneUri = ringToneManager.getRingtoneUri((int) (Math.random() * mNumberOfRingtones));
-			mediaPlayer.prepare();
 			mediaPlayer.setLooping(true);
 			mediaPlayer.start();
 		} catch (IllegalArgumentException e) {
@@ -78,9 +81,6 @@ public class RingManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -1,33 +1,18 @@
 package com.nptu.dse.shaking.alarm;
 
-import com.nptu.dse.shaking.R;
 import com.nptu.dse.shaking.activity.AnimationDialogActivity;
-import com.nptu.dse.shaking.activity.DialogActivity;
-import com.nptu.dse.shaking.activity.SelectSportActivity;
 import com.nptu.dse.shaking.db.AlarmEntity;
-import com.nptu.dse.shaking.main.ApplicationManager;
-import com.nptu.dse.shaking.main.MainActivity;
 import com.nptu.dse.shaking.main.NotificationManager;
 import com.nptu.dse.shaking.manager.PowerManager;
 import com.nptu.dse.shaking.manager.RingManager;
 import com.nptu.dse.shaking.resource.IntentKey;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.sax.StartElementListener;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
