@@ -1,5 +1,7 @@
 package com.nptu.dse.shaking.alarm;
 
+import java.util.Calendar;
+
 import com.nptu.dse.shaking.activity.AnimationDialogActivity;
 import com.nptu.dse.shaking.db.AlarmEntity;
 import com.nptu.dse.shaking.main.NotificationManager;
@@ -46,9 +48,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 		NotificationManager.getInstance().sendNotification(context, message);
 		
 		goToDialogActivity(message);
-		
-		RingManager.getInstance().setDefaultRingTone();
-		RingManager.getInstance().startRing();
 		
 		PowerManager.getInstance().lightScreenOn();
 	}

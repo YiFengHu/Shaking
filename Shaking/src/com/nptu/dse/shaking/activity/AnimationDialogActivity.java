@@ -34,6 +34,9 @@ public class AnimationDialogActivity extends Activity{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		RingManager.getInstance().setDefaultRingTone();
+		RingManager.getInstance().startRing();
+		
 		super.onCreate(savedInstanceState);
 		context = this;
 		

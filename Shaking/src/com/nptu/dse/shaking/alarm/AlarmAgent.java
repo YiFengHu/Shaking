@@ -171,14 +171,19 @@ public class AlarmAgent {
 //			
 //			@Override
 //			public void run() {
-				calendar = Calendar.getInstance();
-				if(isReset){
-					calendar.add(Calendar.DATE, 1);
-				}
 				
+				//Only allowing user set one alarm
+				cancelAlarm();
+				calendar = Calendar.getInstance();
 				calendar.set(Calendar.HOUR_OF_DAY, hoursOfDay);
 				calendar.set(Calendar.MINUTE, minute);
 				calendar.set(Calendar.SECOND, 00);
+		
+				boolean isTimePassed = System.currentTimeMillis()>= calendar.getTimeInMillis();
+						
+				if(isReset||isTimePassed){
+					calendar.add(Calendar.DATE, 1);
+				}
 				
 				Log.d(TAG, "set alarm: hour=" + calendar.get(Calendar.HOUR_OF_DAY)+", minute="+calendar.get(Calendar.MINUTE));
 
