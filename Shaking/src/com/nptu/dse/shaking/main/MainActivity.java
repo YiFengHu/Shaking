@@ -18,6 +18,7 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.view.Menu;
@@ -28,6 +29,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener, AlarmDataListener, OnTimeSetListener{
 	
@@ -52,6 +54,7 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 	
 	private Date date = null;
 	private ArrayList<AlarmEntity> mAlarmList = null;
+	private boolean exit = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,26 @@ public class MainActivity extends Activity implements OnClickListener, AlarmData
 		return super.onOptionsItemSelected(item);
 	}
 	
+	
+	@Override
+	public void onBackPressed() {
+//		super.onBackPressed();
+		if (exit) {
+            System.exit(0);
+        } else {
+            Toast.makeText(this, getString(R.string.main_press_back_again_to_exit_app),
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
+	}
+
 	private void setTextView() {
 		if(alarmAgent.isAlarmExist()){
 //			alarmAgent.requestCountDown();

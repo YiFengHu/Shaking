@@ -9,10 +9,10 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.GET_TASKS" />
-	<uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-	
-	
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
+
     <application
         android:name=".main.ShakingApp"
         android:allowBackup="true"
@@ -46,7 +46,6 @@
         <activity
             android:name=".activity.AnimationDialogActivity"
             android:theme="@style/DialogTheme" />
-        
     </application>
 
 </manifest>

@@ -12,6 +12,7 @@
     <string name="main_add_an_alarm_to_shake">Add an alarm to Shake!</string>
     <string name="main_shake_now">Shake now!</string>
     <string name="main_go">Go</string>
+    <string name="main_press_back_again_to_exit_app">Press back again to exit Shaking</string>
 
     <!-- Alarm Dialog -->
     <string name="alarm_dialog_time_to_do_some_excercise">Time to do some excercise!!!</string>

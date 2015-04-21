@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.nptu.dse.shaking.R;
 import com.nptu.dse.shaking.main.MainActivity;
+import com.nptu.dse.shaking.manager.RingManager;
 import com.nptu.dse.shaking.resource.IntentKey;
 
 import android.app.Activity;
@@ -48,6 +49,9 @@ public class SelectSportActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		RingManager.getInstance().stopRing();
+		
 		setContentView(R.layout.activity_select_video);
 		buttonList = new ArrayList<Button>();
 		imageViewList = new ArrayList<ImageView>();
@@ -106,6 +110,8 @@ public class SelectSportActivity extends Activity implements OnClickListener {
 		Intent intent = new Intent();
 		intent.setClass(this, MainActivity.class);
 		startActivity(intent);
+		finish();
+//		super.onBackPressed();
 	}
 
 	@Override

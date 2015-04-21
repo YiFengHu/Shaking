@@ -12,7 +12,8 @@
     <string name="main_add_an_alarm_to_shake">新增一個鬧鐘</string>
     <string name="main_shake_now">開始運動</string>
     <string name="main_go">Go</string>
-
+    <string name="main_press_back_again_to_exit_app">再按一次倒退鍵退出</string>
+    
     <!-- Alarm Dialog -->
     <string name="alarm_dialog_time_to_do_some_excercise">該做運動囉!!!</string>
     <string name="alarm_dialog_ok">好</string>

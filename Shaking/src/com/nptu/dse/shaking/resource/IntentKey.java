@@ -7,7 +7,8 @@ public class IntentKey {
 //	public static final String INTENT_KEY_HOUR = DBRepository.ALARM_HOUR; 
 //	public static final String INTENT_KEY_MINUTE = DBRepository.ALARM_MINUTE; 
 //	public static final String INTENT_KEY_TIME = DBRepository.ALARM_TIME;
-	
+	public static final String INTENT_KEY_START_MODE = "INTENT_KEY_START_MODE"; 
+
 	public static final String INTENT_KEY_ID = "INTENT_KEY_ID"; 
 	public static final String INTENT_KEY_MESSAGE = "INTENT_KEY_MESSAGE"; 
 	public static final String INTENT_KEY_HOUR = "INTENT_KEY_HOUR"; 
